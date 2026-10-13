@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuoteLens – Compare Supplier Quotes Side by Side (PDF, Excel, Photos)</title>
+<meta name="description" content="Drop in supplier quotes as PDFs, spreadsheets or phone photos. QuoteLens lines up every item, finds the cheapest supplier including delivery and tax, and flags the fine print. Runs on your device; quotes never leave your computer.">
+<meta name="theme-color" content="#142033">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --desk: #e9edf2;
+  --sheet: #ffffff;
+  --ink: #142033;
+  --ink-2: #4b586b;
+  --ink-3: #7a8698;
+  --line: #d4dbe4;
+  --line-2: #e6ebf1;
+  --blue: #2450d6;
+  --blue-ink: #ffffff;
+  --mark: #ffe14d;
+  --mark-ink: #2b2400;
+  --flag: #c4372c;
+  --flag-bg: #fdecea;
+  --warn-bg: #fff5d9;
+  --ok: #1d7a51;
+  --ok-bg: #e5f4ec;
+  --verdict-bg: #142033;
+  --verdict-ink: #ffffff;
+  --font: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --desk: #0f141c;
+    --sheet: #171e29;
+    --ink: #e7ecf3;
+    --ink-2: #a5b0c0;
+    --ink-3: #7c8799;
+    --line: #2b3546;
+    --line-2: #222b39;
+    --blue: #6f95ff;
+    --blue-ink: #0b1430;
+    --mark: #e9c72e;
+    --mark-ink: #221c00;
+    --flag: #ff8a7f;
+    --flag-bg: #3a1e1c;
+    --warn-bg: #3a3218;
+    --ok: #63d19b;
+    --ok-bg: #16342a;
+    --verdict-bg: #22324d;
+    --verdict-ink: #e7ecf3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+    --desk: #0f141c;
+    --sheet: #171e29;
+    --ink: #e7ecf3;
+    --ink-2: #a5b0c0;
+    --ink-3: #7c8799;
+    --line: #2b3546;
+    --line-2: #222b39;
+    --blue: #6f95ff;
+    --blue-ink: #0b1430;
+    --mark: #e9c72e;
+    --mark-ink: #221c00;
+    --flag: #ff8a7f;
+    --flag-bg: #3a1e1c;
+    --warn-bg: #3a3218;
+    --ok: #63d19b;
+    --ok-bg: #16342a;
+    --verdict-bg: #22324d;
+    --verdict-ink: #e7ecf3;
+    color-scheme: dark;
+  }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--desk); color: var(--ink); font: 16px/1.55 var(--font); font-variant-numeric: tabular-nums; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+header.top { padding: 22px 0 0; }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
+.logo svg { width: 28px; height: 28px; }
+.engine { font-size: 0.86rem; color: var(--ink-2); display: inline-flex; align-items: center; gap: 8px; background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; }
+.engine .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
+.engine.ai .dot { background: var(--ok); }
+.engine button { border: 0; background: none; color: var(--blue); font-weight: 600; cursor: pointer; padding: 0; }
+
+.hero { padding: 40px 0 26px; }
+.hero h1 { font-size: clamp(2.1rem, 5.6vw, 3.6rem); line-height: 1.02; letter-spacing: -0.035em; margin: 0 0 14px; max-width: 15ch; font-weight: 800; }
+.hero h1 .hl { background: linear-gradient(100deg, transparent 2%, var(--mark) 4%, var(--mark) 94%, transparent 97%); color: var(--mark-ink); padding: 0 0.12em; border-radius: 0.2em 0.5em 0.3em 0.6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.hero p { font-size: 1.12rem; color: var(--ink-2); max-width: 56ch; margin: 0; }
+
+.drop { margin-top: 26px; background: var(--sheet); border: 2px dashed var(--line); border-radius: 18px; padding: 34px 22px; display: grid; gap: 14px; justify-items: center; text-align: center; transition: border-color .15s, background .15s; }
+.drop.over { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 6%, var(--sheet)); }
+.drop strong { font-size: 1.2rem; }
+.drop .types { color: var(--ink-3); font-size: 0.92rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.btn { border: 1.5px solid var(--line); background: var(--sheet); border-radius: 11px; padding: 11px 18px; font-weight: 600; cursor: pointer; }
+.btn.primary { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
+.btn:disabled { opacity: .5; cursor: default; }
+.privacy { font-size: 0.88rem; color: var(--ink-2); display: inline-flex; gap: 8px; align-items: center; }
+
+section.step { margin-top: 44px; }
+.step-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.step-head h2 { margin: 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+.step-head p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
+
+/* Supplier review cards */
+.cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.card { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+.card-top { padding: 14px 16px 10px; border-bottom: 1px solid var(--line-2); display: grid; gap: 4px; }
+.card-top input.name { border: 0; background: transparent; font-weight: 700; font-size: 1.1rem; padding: 2px 0; width: 100%; border-bottom: 1.5px dashed transparent; }
+.card-top input.name:hover, .card-top input.name:focus { border-bottom-color: var(--line); outline: none; }
+.src { font-size: 0.82rem; color: var(--ink-3); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--line-2); color: var(--ink-2); }
+.badge.ai { background: var(--ok-bg); color: var(--ok); }
+.progress { height: 4px; background: var(--line-2); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.progress i { display: block; height: 100%; width: 0; background: var(--blue); transition: width .2s; }
+.items { list-style: none; margin: 0; padding: 0; font-size: 0.92rem; }
+.items li { padding: 10px 12px 10px 16px; border-bottom: 1px solid var(--line-2); display: grid; gap: 4px; }
+.items li.check { background: var(--warn-bg); }
+.items .row1 { display: flex; gap: 6px; align-items: center; }
+.items .row2 { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-size: 0.82rem; }
+.items .row2 label { display: inline-flex; align-items: center; gap: 4px; }
+.items input { border: 1px solid transparent; background: transparent; border-radius: 6px; padding: 3px 6px; }
+.items input.desc { flex: 1; min-width: 0; font-weight: 600; margin-left: -6px; }
+.items input.n { width: 84px; text-align: right; border-color: var(--line-2); font-size: 0.92rem; color: var(--ink); }
+.items input:hover { border-color: var(--line); }
+.items input:focus { border-color: var(--blue); outline: none; background: var(--desk); }
+.items .amt { margin-left: auto; color: var(--ink); font-weight: 600; font-size: 0.92rem; }
+.items .why { font-size: 0.8rem; color: var(--ink); }
+.match-wrap { display: flex; gap: 6px; align-items: baseline; font-size: 0.8rem; color: var(--ink-3); min-width: 0; }
+.match-wrap select { border: 0; background: transparent; color: var(--blue); font-size: 0.8rem; padding: 0; min-width: 0; flex: 1; text-overflow: ellipsis; cursor: pointer; }
+.items .x, .card-foot .x { border: 0; background: none; color: var(--ink-3); cursor: pointer; padding: 4px; border-radius: 6px; }
+.items .x:hover, .card-foot .x:hover { color: var(--flag); }
+.card-foot { padding: 10px 16px 14px; display: grid; gap: 8px; font-size: 0.9rem; margin-top: auto; }
+.kv { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); }
+.kv b { color: var(--ink); font-weight: 600; }
+.add { border: 0; background: none; color: var(--blue); font-weight: 600; cursor: pointer; padding: 8px 16px; text-align: left; font-size: 0.9rem; }
+.flags { display: flex; flex-wrap: wrap; gap: 6px; }
+.flag { font-size: 0.8rem; padding: 3px 9px; border-radius: 7px; background: var(--line-2); color: var(--ink-2); }
+.flag.warn { background: var(--warn-bg); color: var(--ink); }
+.flag.good { background: var(--ok-bg); color: var(--ok); }
+.empty-card { padding: 18px 16px; color: var(--ink-2); font-size: 0.92rem; }
+
+/* Verdict */
+.verdict { background: var(--verdict-bg); color: var(--verdict-ink); border-radius: 20px; padding: 26px 24px; display: grid; gap: 18px; }
+.verdict .big { font-size: clamp(1.35rem, 3.2vw, 1.9rem); line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; max-width: 34ch; margin: 0; }
+.verdict .big mark { background: var(--mark); color: var(--mark-ink); padding: 0 0.15em; border-radius: 0.2em 0.45em 0.25em 0.5em; }
+.insights { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 820px) { .insights { grid-template-columns: repeat(3, 1fr); } }
+.insights li { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 12px 14px; font-size: 0.93rem; line-height: 1.45; }
+.insights li b { display: block; font-size: 0.86rem; opacity: .75; font-weight: 600; margin-bottom: 2px; }
+
+/* Matrix */
+.matrix-wrap { margin-top: 18px; background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; overflow-x: auto; }
+table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 640px; font-size: 0.93rem; }
+.matrix th, .matrix td { padding: 11px 14px; border-bottom: 1px solid var(--line-2); text-align: right; white-space: nowrap; }
+.matrix th:first-child, .matrix td:first-child { text-align: left; position: sticky; left: 0; background: var(--sheet); white-space: normal; min-width: 190px; max-width: 280px; z-index: 1; }
+.matrix thead th { font-size: 0.86rem; color: var(--ink-2); font-weight: 600; vertical-align: bottom; border-bottom: 1.5px solid var(--line); }
+.matrix thead th .rank { display: block; font-size: 0.75rem; color: var(--ink-3); font-weight: 500; }
+.matrix td .sub { display: block; font-size: 0.78rem; color: var(--ink-3); }
+.matrix td .qty { font-size: 0.78rem; color: var(--ink-3); }
+.matrix .missing { color: var(--flag); font-size: 0.86rem; }
+.matrix tr.sum td { font-weight: 600; background: color-mix(in srgb, var(--line-2) 50%, var(--sheet)); }
+.matrix tr.sum td:first-child { background: color-mix(in srgb, var(--line-2) 50%, var(--sheet)); }
+.matrix tr.total td { font-size: 1.05rem; font-weight: 800; border-bottom: 0; }
+.matrix .best { display: inline-block; position: relative; z-index: 0; padding: 0 0.35em; color: var(--mark-ink); font-weight: 700; }
+.matrix .best::before { content: ""; position: absolute; inset: 0.05em -0.05em; z-index: -1; background: var(--mark); border-radius: 0.25em 0.6em 0.3em 0.7em; transform: skew(-6deg); transform-origin: left; animation: swipe .55s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0s); }
+@keyframes swipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) { .matrix .best::before { animation: none; } }
+@media (max-width: 640px) {
+  table.matrix { min-width: 0; font-size: 0.84rem; }
+  .matrix th, .matrix td { padding: 9px 10px; }
+  .matrix th:first-child, .matrix td:first-child { min-width: 118px; max-width: 132px; }
+  .matrix td .sub { font-size: 0.72rem; }
+  .swipe { display: block !important; }
+}
+.swipe { display: none; font-size: 0.8rem; color: var(--ink-3); padding: 8px 12px 0; }
+.note-row td { font-size: 0.82rem; color: var(--ink-2); }
+.legend { margin-top: 10px; font-size: 0.85rem; color: var(--ink-2); display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.legend .best-s { background: var(--mark); color: var(--mark-ink); padding: 0 6px; border-radius: 4px; font-weight: 700; }
+
+.fine { margin-top: 18px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.fine .card { padding: 14px 16px; gap: 8px; }
+.fine h3 { margin: 0; font-size: 1rem; }
+.fine ul { margin: 0; padding-left: 18px; font-size: 0.88rem; color: var(--ink-2); }
+
+.export { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.tax-set { display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--ink-2); }
+.tax-set input { width: 70px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); text-align: right; }
+
+.how { margin-top: 56px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+.how div { border-top: 2px solid var(--ink); padding-top: 12px; }
+.how h3 { margin: 0 0 4px; font-size: 1.02rem; }
+.how p { margin: 0; color: var(--ink-2); font-size: 0.93rem; }
+footer { margin: 56px 0 30px; color: var(--ink-3); font-size: 0.85rem; }
+.charge-form { display: flex; gap: 6px; flex-wrap: wrap; }
+.charge-form input { flex: 1 1 120px; min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: var(--desk); }
+.charge-form input.amt-in { flex: 0 1 100px; text-align: right; }
+.charge-form .btn { padding: 6px 12px; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: var(--sheet); padding: 10px 16px; border-radius: 10px; font-size: 0.92rem; z-index: 10; }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="logo">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="4" width="10" height="20" rx="2.5" fill="currentColor" opacity=".25"/><rect x="16" y="4" width="10" height="20" rx="2.5" fill="currentColor" opacity=".25"/><rect x="1" y="12" width="26" height="5" rx="2" fill="#ffe14d"/></svg>
+    QuoteLens
+  </span>
+  <span class="engine" id="engine"><span class="dot"></span><span id="engineText">Checking this device…</span></span>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <h1>Which quote is <span class="hl">actually</span> cheapest?</h1>
+    <p>Drop in your supplier quotes, whether PDFs, spreadsheets or photos of paper quotes. QuoteLens lines up every item, adds delivery and tax, and flags the fine print, so you compare the real price.</p>
+    <div class="drop" id="drop">
+      <strong>Drop 2 to 10 quotes here</strong>
+      <span class="types">PDF, Excel, CSV, JPG or PNG. One file per supplier.</span>
+      <div class="actions">
+        <label class="btn primary" for="files">Choose files</label>
+        <input id="files" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.txt,image/*" hidden>
+        <button class="btn" id="sample" type="button">Try 3 sample quotes</button>
+      </div>
+      <span class="privacy">🔒 Your quotes are read on this device and never uploaded.</span>
+    </div>
+  </div>
+
+  <section class="step" id="reviewStep" hidden>
+    <div class="step-head">
+      <h2>Check what was read</h2>
+      <p>Fix anything that looks wrong. The comparison updates as you type.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="step" id="compareStep" hidden>
+    <div class="step-head">
+      <h2>Comparison</h2>
+      <span class="tax-set"><label for="taxRate">Tax rate for quotes that say "tax extra"</label><input id="taxRate" type="number" min="0" step="0.5"> %</span>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <div class="matrix-wrap"><span class="swipe" id="swipe">Swipe sideways to see every supplier</span><table class="matrix" id="matrix"></table></div>
+    <div class="legend"><span><span class="best-s">₹92</span> lowest price for that item</span><span>Totals include delivery and other charges, plus tax.</span></div>
+    <h2 style="margin:40px 0 0;font-size:1.3rem">Fine print</h2>
+    <div class="fine" id="fine"></div>
+    <div class="export">
+      <button class="btn primary" id="xlsx" type="button">Download Excel</button>
+      <button class="btn" id="copy" type="button">Copy summary</button>
+      <button class="btn" id="reset" type="button">Start over</button>
+    </div>
+  </section>
+
+  <div class="how">
+    <div><h3>Reads any format</h3><p>PDF and Excel quotes are read exactly. Photos are read with text recognition, or with Chrome's built-in AI on computers that support it.</p></div>
+    <div><h3>Matches items across suppliers</h3><p>"Gypsum board 12.5mm 8x4" and "12.5 mm gypsum sheet (8'x4')" are recognised as the same item.</p></div>
+    <div><h3>Compares the real total</h3><p>Delivery, loading and tax are added. Missing items and short validity are flagged before you sign.</p></div>
+  </div>
+  <footer>QuoteLens runs entirely in your browser. Always confirm final prices with your supplier.</footer>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
