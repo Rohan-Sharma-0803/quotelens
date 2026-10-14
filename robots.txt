@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rohan-sharma-0803.github.io/quotelens/sitemap.xml

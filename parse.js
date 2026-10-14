@@ -5,9 +5,9 @@ const CHARGE_RE = /\b(transport(ation)?|freight|delivery|shipping|cartage|carria
 const TAX_RE = /\b(gst|cgst|sgst|igst|utgst|vat|tax|sales tax|cess)\b/i;
 const TOTAL_RE = /\b(sub[\s-]?total|grand\s*total|net\s*total|total\s*amount|amount\s*payable|total)\b/i;
 const NOTE_RE = /\b(extra|excl|exclusive|excluding|ex[\s-]?godown|ex[\s-]?works|ex[\s-]?factory|advance|payment|valid|validity|warranty|guarantee|stock|lead\s*time|weeks?|days?|subject to|as applicable|terms|note|inclusive|including|free)\b/i;
-const JUNK_RE = /\b(date|period|billing|registered office|capital|account|page \d|invoice (no|number|#)|order (no|number|#)|po (no|number)|customer (no|id)|kvk|siret|iban|bic|swift|vat\s*(no|number|id|reg)|tin\b|pan\b|cin\b|zip|postcode|street|road|nagar|floor|plot)\b|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},?\s+(19|20)\d\d\b|\b\d{1,2}[-/.]\d{1,2}[-/.](19|20)?\d\d\b/i;
+const JUNK_RE = /\b(date|period|billing|registered office|capital|account|page \d|invoice (no|number|#)|order (no|number|#)|po (no|number)|customer (no|id)|kvk|siret|iban|bic|swift|vat\s*(no|number|id|reg)|tin\b|pan\b|cin\b|n[°o]\.?\s*(tva|vat|tax)\b|zip|postcode|street|road|nagar|floor|plot)\b|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2},?\s+(19|20)\d\d\b|\b\d{1,2}[-/.]\d{1,2}[-/.](19|20)?\d\d\b/i;
 const CONTACT_RE = /\b(mob(ile)?|phone|ph\.?|tel|fax|whatsapp|gstin|pan|pin\s*code|a\/c|ifsc|account no)\b|@[a-z]/i;
-const UNIT_WORDS = new Set(['nos', 'no', 'no.', 'pcs', 'pc', 'pieces', 'piece', 'unit', 'units', 'each', 'ea', 'bag', 'bags', 'box', 'boxes', 'set', 'sets', 'sheet', 'sheets', 'bucket', 'buckets', 'kg', 'kgs', 'ltr', 'ltrs', 'litre', 'litres', 'liter', 'liters', 'l', 'mtr', 'mtrs', 'm', 'rmt', 'sqft', 'sq.ft', 'sft', 'sqm', 'roll', 'rolls', 'pkt', 'pack', 'packs', 'pair', 'pairs', 'dozen', 'doz', 'ton', 'tons', 'mt', 'lot', 'job', 'hrs', 'hr', 'hours', 'days']);
+const UNIT_WORDS = new Set(['nos', 'no', 'no.', 'pcs', 'pc', 'pieces', 'piece', 'unit', 'units', 'each', 'ea', 'bag', 'bags', 'box', 'boxes', 'set', 'sets', 'sheet', 'sheets', 'bucket', 'buckets', 'kg', 'kgs', 'ltr', 'ltrs', 'litre', 'litres', 'liter', 'liters', 'l', 'mtr', 'mtrs', 'm', 'rmt', 'sqft', 'sq.ft', 'sft', 'sqm', 'roll', 'rolls', 'pkt', 'pack', 'packs', 'pair', 'pairs', 'dozen', 'doz', 'ton', 'tons', 'mt', 'lot', 'job', 'pce', 'stk', 'hrs', 'hr', 'hours', 'days']);
 
 export function parseNumber(raw) {
   if (raw == null) return NaN;
@@ -16,7 +16,8 @@ export function parseNumber(raw) {
   if (!/^-?\d[\d,.]*$/.test(s)) return NaN;
   // European style 1.234,56
   if (/^\d{1,3}(\.\d{3})+,\d{1,2}$/.test(s)) s = s.replace(/\./g, '').replace(',', '.');
-  else if (/^\d+,\d{2}$/.test(s)) s = s.replace(',', '.');
+  // single decimal comma: 12,5 / 60,00 / 9,9000 (3 digits after one comma stays a thousands separator: 1,234)
+  else if (/^-?\d+,(\d{1,2}|\d{4,})$/.test(s)) s = s.replace(',', '.');
   else s = s.replace(/,/g, '');
   if ((s.match(/\./g) || []).length > 1) return NaN;
   return parseFloat(s);
@@ -54,21 +55,33 @@ export function parseItemLine(line) {
   const words = toks.filter((t) => isNaN(t.n));
   if (!words.some((t) => /[a-z]{2,}/i.test(t.tok))) return null;
   const last = nums[nums.length - 1];
-  // amount must be the last token or be followed only by currency/unit noise
-  const tail = toks.slice(last.i + 1).map((t) => t.tok.toLowerCase());
-  if (tail.some((t) => /[a-z]{3,}/.test(t) && !CUR_RE.test(t))) return null;
+  const isPct = (t) => /^-?\d+(?:[.,]\d+)?\s*%$/.test(t.tok) || t.tok === '%';
+  // amount must be the last number or be followed only by tax columns (18% 900 5900), currency or unit noise
+  const tailOk = (k) => {
+    const rest = toks.slice(nums[k].i + 1);
+    if (rest.some((t) => isNaN(t.n) && /[a-z]{3,}/i.test(t.tok) && !CUR_RE.test(t.tok))) return false;
+    return k === nums.length - 1 || rest.some(isPct);
+  };
+  if (!tailOk(nums.length - 1)) return null;
 
-  // 1) find qty * rate = amount, preferring pairs closest to the end
-  for (let j = nums.length - 2; j >= 1; j--) {
-    for (let i = j - 1; i >= 0; i--) {
-      const q = nums[i].n, r = nums[j].n, a = last.n;
-      if (q > 0 && r > 0 && near(q * r, a)) {
-        const prev = (toks[nums[i].i - 1] || {}).tok || '';
-        const qLooksLikePrice = CUR_RE.test(prev) || CUR_RE.test(nums[i].tok) || /\.\d{2}$/.test(nums[i].tok) && !/\.\d{2}$/.test(nums[j].tok);
-        const swap = Number.isInteger(r) && (!Number.isInteger(q) || qLooksLikePrice);
-        return build(toks, nums[i].i, { qty: swap ? r : q, rate: swap ? q : r, amount: a, ok: true });
+  // 1) find qty * rate = amount, preferring pairs closest to the end. The amount is the last number, or
+  //    (for quotes with GST/VAT columns) a net amount followed by a tax % and tax/gross amounts.
+  //    Exact matches win over rounding-tolerant ones, so "7,50 7,50 10% 8,25" takes the net 7,50, not the gross.
+  const exact = (x, y) => Math.abs(x - y) <= Math.max(0.011, Math.abs(y) * 0.002);
+  for (const close of [exact, near]) for (let k = nums.length - 1; k >= Math.max(2, nums.length - 4); k--) {
+    if (!tailOk(k)) continue;
+    const a = nums[k].n;
+    for (let j = k - 1; j >= 1; j--) {
+      for (let i = j - 1; i >= 0; i--) {
+        const q = nums[i].n, r = nums[j].n;
+        if (q > 0 && r > 0 && close(q * r, a)) {
+          const prev = (toks[nums[i].i - 1] || {}).tok || '';
+          const dec = (t) => /[.,]\d{2,4}$/.test(t);
+          const qLooksLikePrice = CUR_RE.test(prev) || CUR_RE.test(nums[i].tok) || dec(nums[i].tok) && !dec(nums[j].tok);
+          const swap = Number.isInteger(r) && (!Number.isInteger(q) || qLooksLikePrice);
+          return build(toks, nums[i].i, { qty: swap ? r : q, rate: swap ? q : r, amount: a, ok: true, rateIndex: nums[j].i });
+        }
       }
-      if (q > 0 && r > 0 && near(q * r, a) === false && near(r * q, a)) break;
     }
   }
   // 2) qty * rate where amount missing: "LED panel 40 1290"
@@ -97,9 +110,13 @@ export function parseItemLine(line) {
 function fmtPlain(n) { return (Math.round(n * 100) / 100).toLocaleString('en-US'); }
 
 function build(toks, qtyIndex, v) {
-  const desc = cleanDescription(toks.slice(0, qtyIndex).map((t) => t.tok));
+  let desc = cleanDescription(toks.slice(0, qtyIndex).map((t) => t.tok));
+  // quantity written first: "400,00 Balloons, assorted 19% 0,79 € 316,00 €"
+  if ((!desc || !/[a-z]{2,}/i.test(desc)) && v.rateIndex > qtyIndex + 1) {
+    desc = cleanDescription(toks.slice(qtyIndex + 1, v.rateIndex).filter((t) => !/%$/.test(t.tok) && !CUR_RE.test(t.tok) || /[a-z]{4,}/i.test(t.tok)).map((t) => t.tok));
+  }
   const unitTok = toks.slice(qtyIndex + 1).find((t) => isNaN(t.n) && UNIT_WORDS.has(t.tok.toLowerCase().replace(/[.,]$/, '')));
-  if (!desc || desc.length < 2) return null;
+  if (!desc || desc.length < 2 || desc.split(' ').every((w) => UNIT_WORDS.has(w.toLowerCase()))) return null;
   return { description: desc, qty: v.qty, unit: unitTok ? unitTok.tok : '', rate: v.rate, amount: v.amount, check: v.ok ? '' : (v.note || 'Check this line') };
 }
 

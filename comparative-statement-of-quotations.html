@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparative Statement of Quotations: Format, Example and Free Excel Template</title>
+<meta name="description" content="How to prepare a comparative statement of quotations: the format, a worked example with GST and freight, L1/L2/L3 ranking, common mistakes and a free Excel template.">
+<link rel="canonical" href="https://rohan-sharma-0803.github.io/quotelens/comparative-statement-of-quotations.html">
+<meta name="theme-color" content="#142033">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a comparative statement of quotations?", "acceptedAnswer": {"@type": "Answer", "text": "It is a table that puts the quotations from different suppliers for the same requirement side by side, item by item, with their rates, amounts, charges, taxes and terms, so you can see which supplier offers the lowest total cost and which one to recommend."}}, {"@type": "Question", "name": "Who prepares the comparative statement?", "acceptedAnswer": {"@type": "Answer", "text": "Usually the purchase or procurement team, or whoever collected the quotations. It is then checked and approved by someone else, such as the department head or the finance team, before the purchase order is placed."}}, {"@type": "Question", "name": "What does L1, L2 and L3 mean?", "acceptedAnswer": {"@type": "Answer", "text": "L1 is the supplier with the lowest total cost, L2 the second lowest and L3 the third. The ranking should be done on the landed cost: basic price plus freight, other charges and GST, after confirming every quote meets the specification."}}, {"@type": "Question", "name": "Should GST be included when comparing quotations?", "acceptedAnswer": {"@type": "Answer", "text": "Compare on the same basis. Either convert every quote to rates excluding GST and add GST once at the end, or compare all-inclusive totals. Mixing GST-inclusive and GST-extra rates in the same row is the most common mistake."}}, {"@type": "Question", "name": "Is the lowest quotation always selected?", "acceptedAnswer": {"@type": "Answer", "text": "Not always. The L1 supplier is normally preferred, but a slightly higher quote can be justified by better payment terms, faster delivery, longer warranty or a better technical fit. Write the reason in the recommendation."}}, {"@type": "Question", "name": "Can I make a comparative statement in Excel?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Download the free Excel template on this page. Enter quantities and each supplier's rates excluding GST, and it calculates amounts, freight, GST, grand total, the lowest rate per item and the L1/L2/L3 ranking."}}]}</script>
+<style>
+:root {
+  --desk: #e9edf2;
+  --sheet: #ffffff;
+  --ink: #142033;
+  --ink-2: #4b586b;
+  --ink-3: #7a8698;
+  --line: #d4dbe4;
+  --line-2: #e6ebf1;
+  --blue: #2450d6;
+  --blue-ink: #ffffff;
+  --mark: #ffe14d;
+  --mark-ink: #2b2400;
+  --flag: #c4372c;
+  --flag-bg: #fdecea;
+  --warn-bg: #fff5d9;
+  --ok: #1d7a51;
+  --ok-bg: #e5f4ec;
+  --verdict-bg: #142033;
+  --verdict-ink: #ffffff;
+  --font: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --desk: #0f141c;
+    --sheet: #171e29;
+    --ink: #e7ecf3;
+    --ink-2: #a5b0c0;
+    --ink-3: #7c8799;
+    --line: #2b3546;
+    --line-2: #222b39;
+    --blue: #6f95ff;
+    --blue-ink: #0b1430;
+    --mark: #e9c72e;
+    --mark-ink: #221c00;
+    --flag: #ff8a7f;
+    --flag-bg: #3a1e1c;
+    --warn-bg: #3a3218;
+    --ok: #63d19b;
+    --ok-bg: #16342a;
+    --verdict-bg: #22324d;
+    --verdict-ink: #e7ecf3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+    --desk: #0f141c;
+    --sheet: #171e29;
+    --ink: #e7ecf3;
+    --ink-2: #a5b0c0;
+    --ink-3: #7c8799;
+    --line: #2b3546;
+    --line-2: #222b39;
+    --blue: #6f95ff;
+    --blue-ink: #0b1430;
+    --mark: #e9c72e;
+    --mark-ink: #221c00;
+    --flag: #ff8a7f;
+    --flag-bg: #3a1e1c;
+    --warn-bg: #3a3218;
+    --ok: #63d19b;
+    --ok-bg: #16342a;
+    --verdict-bg: #22324d;
+    --verdict-ink: #e7ecf3;
+    color-scheme: dark;
+  }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--desk); color: var(--ink); font: 17px/1.65 var(--font); font-variant-numeric: tabular-nums; }
+a { color: var(--blue); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+header.top { padding: 22px 0 0; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+.logo svg { width: 28px; height: 28px; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.08; letter-spacing: -0.03em; margin: 36px 0 14px; font-weight: 800; }
+h1 .hl { background: var(--mark); color: var(--mark-ink); padding: 0 0.12em; border-radius: 0.2em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+h2 { font-size: 1.45rem; letter-spacing: -0.02em; margin: 44px 0 10px; line-height: 1.2; }
+h3 { font-size: 1.1rem; margin: 26px 0 6px; }
+.lede { font-size: 1.12rem; color: var(--ink-2); margin: 0 0 8px; }
+.sheet { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin: 18px 0; }
+.tbl { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 14px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line-2); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; min-width: 140px; }
+thead th { background: color-mix(in srgb, var(--blue) 8%, var(--sheet)); font-weight: 700; }
+tr.total td { font-weight: 700; border-top: 2px solid var(--line); }
+td.best { background: var(--mark); color: var(--mark-ink); font-weight: 700; }
+.note { font-size: 0.9rem; color: var(--ink-2); }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 6px; }
+.btn { display: inline-block; border: 1.5px solid var(--line); background: var(--sheet); border-radius: 11px; padding: 11px 18px; font-weight: 600; text-decoration: none; color: var(--ink); }
+.btn.primary { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
+ol li, ul li { margin: 6px 0; }
+.warn { background: var(--warn-bg); border-radius: 12px; padding: 12px 16px; margin: 14px 0; }
+details { background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin: 10px 0; }
+summary { font-weight: 600; cursor: pointer; }
+details p { margin: 8px 0 0; color: var(--ink-2); }
+footer { margin: 56px 0 30px; color: var(--ink-3); font-size: 0.85rem; }
+footer a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="./">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="4" width="10" height="20" rx="2.5" fill="currentColor" opacity=".25"/><rect x="16" y="4" width="10" height="20" rx="2.5" fill="currentColor" opacity=".25"/><rect x="1" y="12" width="26" height="5" rx="2" fill="#ffe14d"/></svg>
+    QuoteLens
+  </a>
+</div></header>
+
+<main class="wrap">
+<article>
+<h1>Comparative statement of quotations: <span class="hl">format, example</span> and free Excel template</h1>
+<p class="lede">A comparative statement puts every supplier's quotation for the same requirement in one table, so you can see who is really cheapest once freight, GST and terms are counted, and record why you chose them.</p>
+<div class="cta">
+  <a class="btn primary" href="templates/comparative-statement-of-quotations.xlsx" download>Download the Excel template</a>
+  <a class="btn" href="./">Or let QuoteLens build it from your quote PDFs</a>
+</div>
+
+<h2>What is a comparative statement of quotations?</h2>
+<p>When you ask three or more suppliers to quote for the same items, their quotes arrive in different layouts: one is a PDF, one is an Excel sheet, one is a photo of a printed letterhead. Some include GST, some say "GST extra", some add freight at the bottom. A comparative statement (also called a quotation comparison sheet or price comparison chart) rewrites all of them into one common format, item by item, so they can be compared fairly.</p>
+<p>It is used by purchase departments, contractors, schools, hospitals, housing societies and government offices, and is usually attached to the purchase file as proof that the order was placed on a fair basis.</p>
+
+<h2>Format: what columns to include</h2>
+<div class="sheet">
+<ol>
+  <li><strong>Item details:</strong> serial number, item description, specification or make, quantity and unit. Use the quantity from <em>your</em> enquiry, not each supplier's quote.</li>
+  <li><strong>For each supplier:</strong> rate per unit (excluding GST) and amount (quantity × rate).</li>
+  <li><strong>Lowest rate per item</strong> and which supplier offered it.</li>
+  <li><strong>Below the items:</strong> basic total, freight/delivery, loading or installation, other charges, taxable value, GST % and GST amount, and the grand total (landed cost).</li>
+  <li><strong>Ranking:</strong> L1, L2, L3 on the grand total.</li>
+  <li><strong>Commercial terms:</strong> payment terms, delivery period, quote validity, warranty, and whether the offer meets the specification.</li>
+  <li><strong>Recommendation and signatures:</strong> prepared by, checked by, approved by.</li>
+</ol>
+</div>
+
+<h2>How to prepare it, step by step</h2>
+<ol>
+  <li><strong>Send the same enquiry to every supplier</strong> with the same item list, quantities, delivery location and required terms. Different enquiries give quotes you cannot compare.</li>
+  <li><strong>Check each quote against the specification</strong> before comparing prices. A cheaper item that does not meet the specification is not a valid offer.</li>
+  <li><strong>Bring every rate to the same basis.</strong> If one supplier quotes GST-inclusive rates, divide by 1.18 (for 18% GST) to get the rate excluding GST.</li>
+  <li><strong>Fill the item rows:</strong> amount = your quantity × the supplier's rate. Leave a cell blank (not zero) if a supplier did not quote that item, and note it.</li>
+  <li><strong>Add every charge</strong> mentioned anywhere in the quote: freight, packing, loading, installation, insurance. Read the terms at the bottom carefully; "transport extra" means you must ask for the amount.</li>
+  <li><strong>Add GST</strong> on the taxable value (basic total + charges) and calculate the grand total for each supplier.</li>
+  <li><strong>Rank L1, L2, L3</strong> on the grand total, then write a short recommendation. If you do not pick L1, give the reason.</li>
+</ol>
+
+<h2>Worked example: three quotations for office furniture</h2>
+<p>An office needs 10 chairs, 10 desks and 4 storage cabinets and gets three quotes:</p>
+<ul>
+  <li><strong>Vendor A:</strong> chair ₹6,200, desk ₹8,400, cabinet ₹11,500. Free delivery. GST 18% extra. 30 days credit.</li>
+  <li><strong>Vendor B:</strong> chair ₹5,900, desk ₹8,900, cabinet ₹10,800. Freight ₹3,500. GST 18% extra. 50% advance.</li>
+  <li><strong>Vendor C:</strong> chair ₹7,198, desk ₹9,912, cabinet ₹13,216, <em>all inclusive of GST</em>. Installation ₹2,000 + GST. Payment against delivery.</li>
+</ul>
+<p>Vendor C's rates look the highest, but they include GST. Dividing by 1.18 gives ₹6,100, ₹8,400 and ₹11,200 excluding GST. Now everything is on the same basis:</p>
+<div class="tbl"><table>
+<thead><tr><th>Item</th><th>Qty</th><th>A rate</th><th>A amount</th><th>B rate</th><th>B amount</th><th>C rate</th><th>C amount</th></tr></thead>
+<tbody>
+<tr><td>Office chair, mesh back</td><td>10</td><td>6,200</td><td>62,000</td><td class="best">5,900</td><td>59,000</td><td>6,100</td><td>61,000</td></tr>
+<tr><td>Workstation desk 1200×600</td><td>10</td><td class="best">8,400</td><td>84,000</td><td>8,900</td><td>89,000</td><td class="best">8,400</td><td>84,000</td></tr>
+<tr><td>Steel storage cabinet</td><td>4</td><td>11,500</td><td>46,000</td><td class="best">10,800</td><td>43,200</td><td>11,200</td><td>44,800</td></tr>
+<tr class="total"><td>Basic total</td><td></td><td></td><td>1,92,000</td><td></td><td>1,91,200</td><td></td><td>1,89,800</td></tr>
+<tr><td>Freight / installation</td><td></td><td></td><td>0</td><td></td><td>3,500</td><td></td><td>2,000</td></tr>
+<tr><td>Taxable value</td><td></td><td></td><td>1,92,000</td><td></td><td>1,94,700</td><td></td><td>1,91,800</td></tr>
+<tr><td>GST @ 18%</td><td></td><td></td><td>34,560</td><td></td><td>35,046</td><td></td><td>34,524</td></tr>
+<tr class="total"><td>Grand total</td><td></td><td></td><td>2,26,560</td><td></td><td>2,29,746</td><td></td><td class="best">2,26,324</td></tr>
+<tr><td>Rank</td><td></td><td></td><td>L2</td><td></td><td>L3</td><td></td><td>L1</td></tr>
+<tr><td>Payment terms</td><td></td><td></td><td>30 days credit</td><td></td><td>50% advance</td><td></td><td>On delivery</td></tr>
+</tbody></table></div>
+<p class="note">All amounts in ₹. Highlighted: lowest rate per item and the lowest grand total.</p>
+<p><strong>What the statement shows:</strong> Vendor B has the lowest rate on two of the three items, but freight pushes it to L3. Vendor C looked most expensive on paper and is actually L1. Vendor A is only ₹236 more than C and gives 30 days credit, so a buyer could reasonably recommend A and write that reason down. That is exactly the kind of decision a comparative statement makes visible.</p>
+
+<h2>Common mistakes</h2>
+<ul>
+  <li><strong>Comparing GST-inclusive rates with GST-extra rates.</strong> An 18% difference hidden in one column decides the result.</li>
+  <li><strong>Ignoring charges in the fine print</strong> such as "freight extra", "loading/unloading extra", "installation @ ₹18 per sq ft" or "ex-godown".</li>
+  <li><strong>Comparing different quantities.</strong> If a supplier quoted 8 instead of 10, recalculate on your quantity.</li>
+  <li><strong>Treating a missing item as zero.</strong> A quote that leaves out an item looks cheaper; price the gap from another supplier before ranking.</li>
+  <li><strong>Different specifications or brands</strong> in the same row (for example 12 mm vs 12.5 mm board, or different wattage).</li>
+  <li><strong>Expired quotes.</strong> Check validity; a 7-day quote may need to be re-confirmed.</li>
+  <li><strong>Arithmetic slips</strong> when copying numbers by hand. Check that quantity × rate matches each supplier's own line total.</li>
+</ul>
+<div class="warn">Tip: keep the original quotations attached to the statement. Auditors and approvers will check the rates against them.</div>
+
+<h2>Free comparative statement template (Excel)</h2>
+<p>The template has room for 7 items and 3 suppliers (copy columns for more). Enter quantities and rates excluding GST; it calculates amounts, the lowest rate per item, freight, GST, grand total and the L1/L2/L3 rank. It opens in Excel, Google Sheets and LibreOffice and comes filled with the example above so you can see how it works.</p>
+<div class="cta"><a class="btn primary" href="templates/comparative-statement-of-quotations.xlsx" download>Download template (.xlsx)</a></div>
+
+<h2>Skip the typing: build it from the quotes themselves</h2>
+<p>If your quotations are PDFs, Excel files or phone photos, <a href="./">QuoteLens</a> reads them in your browser, matches the same items across suppliers even when they are named differently, adds freight and GST, flags fine print like "GST extra" or "100% advance", and gives you the comparison as an Excel file. Nothing is uploaded; the quotes stay on your computer. Always check what was read against the original quotes.</p>
+<div class="cta"><a class="btn primary" href="./">Try QuoteLens free</a></div>
+
+<h2>Frequently asked questions</h2>
+<details><summary>What is a comparative statement of quotations?</summary><p>It is a table that puts the quotations from different suppliers for the same requirement side by side, item by item, with their rates, amounts, charges, taxes and terms, so you can see which supplier offers the lowest total cost and which one to recommend.</p></details>
+<details><summary>Who prepares the comparative statement?</summary><p>Usually the purchase or procurement team, or whoever collected the quotations. It is then checked and approved by someone else, such as the department head or the finance team, before the purchase order is placed.</p></details>
+<details><summary>What does L1, L2 and L3 mean?</summary><p>L1 is the supplier with the lowest total cost, L2 the second lowest and L3 the third. The ranking should be done on the landed cost: basic price plus freight, other charges and GST, after confirming every quote meets the specification.</p></details>
+<details><summary>Should GST be included when comparing quotations?</summary><p>Compare on the same basis. Either convert every quote to rates excluding GST and add GST once at the end, or compare all-inclusive totals. Mixing GST-inclusive and GST-extra rates in the same row is the most common mistake.</p></details>
+<details><summary>Is the lowest quotation always selected?</summary><p>Not always. The L1 supplier is normally preferred, but a slightly higher quote can be justified by better payment terms, faster delivery, longer warranty or a better technical fit. Write the reason in the recommendation.</p></details>
+<details><summary>Can I make a comparative statement in Excel?</summary><p>Yes. Download the free Excel template on this page. Enter quantities and each supplier&#x27;s rates excluding GST, and it calculates amounts, freight, GST, grand total, the lowest rate per item and the L1/L2/L3 ranking.</p></details>
+</article>
+<footer><a href="./">QuoteLens</a> · free supplier quote comparison that runs in your browser. Always confirm final prices with your supplier.</footer>
+</main>
+</body>
+</html>

@@ -18,6 +18,9 @@ Everything runs in the visitor's browser: no server, no API costs, and quotes ne
 - `samples/` – three demo quotes used by "Try 3 sample quotes"
 - `tools/test_parse.mjs` – run `node tools/test_parse.mjs` to check parsing and the comparison
 - `tools/make_samples.py` – regenerates the sample quotes
+- `comparative-statement-of-quotations.html` – guide page (search), with `templates/comparative-statement-of-quotations.xlsx`
+- `sitemap.xml`, `robots.txt` – for search engines
+- `TESTING.md` – real-document test record; `SEO.md` – search phrases and pages
 
 ## Hosting
 GitHub Pages: Settings → Pages → Deploy from a branch → `main` / root.
